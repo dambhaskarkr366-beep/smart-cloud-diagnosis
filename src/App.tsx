@@ -13,7 +13,8 @@ import {
   UserCircle,
   Search,
   Headset,
-  Package
+  Package,
+  CalendarCheck
 } from 'lucide-react';
 import { cn } from './lib/utils';
 import type { AppScreen } from './types';
@@ -30,6 +31,7 @@ import RiskControl from './components/RiskControl';
 import SettingsScreen from './components/Settings';
 import MaintenanceManual from './components/MaintenanceManual';
 import SpareParts from './components/SpareParts';
+import VoiceSchedule from './components/VoiceSchedule';
 
 export default function App() {
   const [screen, setScreen] = useState<AppScreen>('dashboard');
@@ -42,6 +44,7 @@ export default function App() {
     { id: 'spare-parts', label: '备件商城', icon: Package },
     { id: 'knowledge', label: '知识库', icon: BookOpen },
     { id: 'risk', label: '风险管控', icon: ShieldAlert },
+    { id: 'voice-schedule', label: '语音日程', icon: CalendarCheck },
     { id: 'settings', label: '系统设置', icon: Settings },
   ];
 
@@ -58,6 +61,7 @@ export default function App() {
       case 'settings': return <SettingsScreen onNavigate={setScreen} />;
       case 'manual': return <MaintenanceManual onNavigate={setScreen} />;
       case 'spare-parts': return <SpareParts onNavigate={setScreen} />;
+      case 'voice-schedule': return <VoiceSchedule onNavigate={() => setScreen('dashboard')} />;
       default: return <Dashboard onStartDiagnosis={() => setScreen('new-ticket')} onNavigate={setScreen} />;
     }
   };
@@ -95,6 +99,15 @@ export default function App() {
               )}
             >
               备件商城
+            </button>
+            <button 
+              onClick={() => setScreen('voice-schedule')}
+              className={cn(
+                "text-sm font-medium transition-colors pb-1 border-b-2",
+                screen === 'voice-schedule' ? "text-primary border-primary" : "text-on-surface-variant border-transparent hover:text-primary"
+              )}
+            >
+              语音日程
             </button>
           </nav>
         </div>
