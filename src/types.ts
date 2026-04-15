@@ -9,7 +9,8 @@ export type AppScreen =
   | 'risk'
   | 'settings'
   | 'manual'
-  | 'spare-parts';
+  | 'spare-parts'
+  | 'voice-schedule';
 
 export interface Technician {
   name: string;
