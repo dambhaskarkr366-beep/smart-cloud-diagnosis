@@ -1,0 +1,58 @@
+<!-- components/item-card/item-card.wxml —— 商品卡片组件 -->
+<view class="card shadow-card rounded-md" wx:if="{{item}}" bindtap="onTap">
+  <!-- 商品图片：widthFix 模式适配瀑布流，高度按原图比例自适应 -->
+  <view class="card-image-wrapper">
+    <image
+      class="card-image"
+      src="{{item.images[0] || fallbackImage}}"
+      mode="aspectFill"
+      lazy-load
+      data-index="0"
+      data-current="{{item.images[0]}}"
+      binderror="onImageError"
+    />
+
+    <!-- 左上角：新旧程度标签（带颜色） -->
+    <view wx:if="{{item.condition}}" class="card-tag tag-{{item.condition === '几乎全新' ? 'green' : item.condition === '轻微使用' ? 'blue' : item.condition === '明显痕迹' ? 'orange' : 'gray'}}">
+      {{item.condition}}
+    </view>
+
+    <!-- 右上角：交易方式标签 -->
+    <view wx:if="{{item.tradeMethod && item.tradeMethod !== '自提'}}" class="card-tag card-tag-right tag-purple">
+      {{item.tradeMethod}}
+    </view>
+  </view>
+
+  <!-- 商品信息区 -->
+  <view class="card-body">
+    <!-- 标题（最多两行） -->
+    <view class="card-title text-ellipsis-2">{{item.title}}</view>
+
+    <!-- 价格 -->
+    <view class="card-price price text-lg">
+      <text class="price-symbol">¥</text>{{item.price}}
+    </view>
+
+    <!-- 底部：地点 + 浏览量（精简模式下隐藏） -->
+    <view wx:if="{{!compact}}" class="card-footer">
+      <view wx:if="{{showLocation && item.location}}" class="card-location text-xs text-hint">
+        <text class="location-icon"></text>
+        <text class="text-ellipsis">{{item.location}}</text>
+      </view>
+      <view wx:if="{{item.viewCount}}" class="card-views text-xs text-hint">
+        {{item._viewCountText || ''}} 次浏览
+      </view>
+    </view>
+
+    <!-- 卖家信息行（精简模式下隐藏） -->
+    <view wx:if="{{!compact && showSeller && item.sellerName}}" class="card-seller mt-sm">
+      <image
+        class="seller-avatar"
+        src="{{item.sellerAvatar || '/images/default-avatar.png'}}"
+        mode="aspectFill"
+        binderror="onSellerAvatarError"
+      />
+      <text class="text-xs text-secondary ml-xs text-ellipsis">{{item.sellerName}}</text>
+    </view>
+  </view>
+</view>

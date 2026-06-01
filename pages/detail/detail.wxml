@@ -1,0 +1,125 @@
+<!-- pages/detail/detail.wxml —— 商品详情页 -->
+<view class="page-container">
+  <!-- ===== 加载中 ===== -->
+  <view wx:if="{{loading}}" class="loading-container">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中…</text>
+  </view>
+
+  <!-- ===== 加载失败 ===== -->
+  <view wx:elif="{{error}}" class="error-container">
+    <view class="error-icon">×</view>
+    <text class="text-md text-secondary mt-sm">{{errorMsg}}</text>
+    <view class="btn-primary btn-sm mt-md" bindtap="onRetry">重新加载</view>
+  </view>
+
+  <!-- ===== 商品详情 ===== -->
+  <block wx:elif="{{item}}">
+    <!-- 图片轮播 -->
+    <view class="swiper-wrap">
+      <swiper
+        class="detail-swiper"
+        indicator-dots="{{item.images.length > 1}}"
+        indicator-color="rgba(255,255,255,0.4)"
+        indicator-active-color="#ffffff"
+        autoplay="{{false}}"
+        circular="{{true}}"
+        bindchange="onSwiperChange"
+      >
+        <swiper-item wx:for="{{item.images}}" wx:key="*this">
+          <image
+            class="swiper-img"
+            src="{{item}}"
+            mode="aspectFill"
+            binderror="onSwiperImageError"
+            data-index="{{index}}"
+            bindtap="onPreviewImage"
+          />
+        </swiper-item>
+      </swiper>
+
+      <!-- 图片计数器（1/6） -->
+      <view wx:if="{{item.images.length > 1}}" class="swiper-counter">
+        {{swiperCurrent + 1}} / {{item.images.length}}
+      </view>
+
+      <!-- 返回按钮 -->
+      <view class="back-btn" bindtap="onGoBack">
+        <text class="back-icon">‹</text>
+      </view>
+    </view>
+
+    <!-- 价格 + 标题 -->
+    <view class="info-card">
+      <view class="price-row">
+        <text class="price-symbol">¥</text>
+        <text class="price-value">{{item.price}}</text>
+        <view wx:if="{{item.originalPrice && item.originalPrice > item.price}}" class="original-price">
+          ¥{{item.originalPrice}}
+        </view>
+      </view>
+      <view class="title-row">{{item.title}}</view>
+
+      <!-- 标签行 -->
+      <view class="tag-row">
+        <text wx:if="{{item.condition}}" class="tag tag-condition">{{item.condition}}</text>
+        <text wx:if="{{item.tradeMethod}}" class="tag tag-method">{{item.tradeMethod}}</text>
+        <text wx:if="{{item.category}}" class="tag tag-category">{{item.category}}</text>
+      </view>
+
+      <!-- 统计行 -->
+      <view class="stats-row">
+        <text class="stat-item">浏览 {{item.viewCount || 0}}</text>
+        <text class="stat-item">收藏 {{item.favorCount || 0}}</text>
+        <text class="stat-item">咨询 {{item.contactCount || 0}}</text>
+        <text class="stat-item">{{item.createdAtText}}</text>
+      </view>
+    </view>
+
+    <!-- 卖家信息卡片 -->
+    <view class="seller-card" bindtap="onContactSeller">
+      <image
+        class="seller-avatar"
+        src="{{item.sellerAvatar || '/images/default-avatar.png'}}"
+        mode="aspectFill"
+        binderror="onSellerAvatarError"
+      />
+      <view class="seller-info">
+        <view class="seller-name">{{item.sellerName || '匿名用户'}}</view>
+        <view class="seller-school text-xs text-secondary">
+          {{item.sellerCampus || ''}}
+          <block wx:if="{{item.sellerDormitory}}"> · {{item.sellerDormitory}}</block>
+        </view>
+      </view>
+      <view class="seller-arrow text-hint">›</view>
+    </view>
+
+    <!-- 交易地点 -->
+    <view wx:if="{{item.location}}" class="location-card">
+      <view class="location-label">交易地点</view>
+      <view class="location-value">{{item.location}}</view>
+    </view>
+
+    <!-- 商品描述 -->
+    <view wx:if="{{item.description}}" class="desc-card">
+      <view class="desc-title">商品描述</view>
+      <view class="desc-content">{{item.description}}</view>
+    </view>
+
+    <!-- 底部占位（防止被底部栏遮挡） -->
+    <view class="bottom-placeholder"></view>
+  </block>
+
+  <!-- ===== 底部操作栏 ===== -->
+  <view wx:if="{{item}}" class="bottom-bar safe-area-bottom">
+    <!-- 收藏按钮 -->
+    <view class="bottom-fav {{isFavorited ? 'faved' : ''}}" bindtap="onToggleFavorite">
+      <text class="fav-text">{{isFavorited ? '已收藏' : '收藏'}}</text>
+    </view>
+
+    <!-- 联系卖家 -->
+    <view class="bottom-contact" bindtap="onContactSeller">
+      <text>联系卖家</text>
+    </view>
+  </view>
+</view>

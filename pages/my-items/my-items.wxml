@@ -1,0 +1,42 @@
+<!-- pages/my-items/my-items.wxml —— 我发布的商品 -->
+<view class="page-container">
+  <view wx:if="{{loading}}" class="loading-container">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中…</text>
+  </view>
+
+  <view wx:elif="{{error}}" class="error-container">
+    <text class="text-md text-secondary">加载失败</text>
+    <view class="btn-primary btn-sm mt-md" bindtap="onRetry">重试</view>
+  </view>
+
+  <view wx:elif="{{items.length === 0}}" class="empty-state">
+    <view class="empty-icon"></view>
+    <text class="text-md text-hint">暂无发布的商品</text>
+  </view>
+
+  <view wx:else class="list-container">
+    <view
+      wx:for="{{items}}"
+      wx:key="_id"
+      class="list-item-card"
+      data-id="{{item._id}}"
+      bindtap="onTapItem"
+    >
+      <image class="list-img" src="{{item.images[0] || '/images/placeholder.png'}}" mode="aspectFill" binderror="onImageError" data-index="{{index}}" />
+      <view class="list-info">
+        <view class="list-title text-ellipsis-2">{{item.title}}</view>
+        <view class="price text-lg mt-xs">¥{{item.price}}</view>
+        <view class="list-meta text-xs text-hint mt-xs">
+          <text class="status-tag {{item.status === 'selling' ? 'tag-selling' : 'tag-sold'}}">
+            {{item.status === 'selling' ? '在售' : '已售'}}
+          </text>
+          <text>浏览 {{item.viewCount || 0}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{loadingMore}}" class="load-more-tip">加载中…</view>
+    <view wx:if="{{!hasMore && items.length > 0}}" class="load-more-tip text-hint">—— 到底了 ——</view>
+  </view>
+</view>

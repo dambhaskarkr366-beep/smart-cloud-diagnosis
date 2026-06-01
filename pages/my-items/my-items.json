@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "我发布的",
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark",
+  "usingComponents": {
+    "item-card": "/components/item-card/item-card"
+  }
+}

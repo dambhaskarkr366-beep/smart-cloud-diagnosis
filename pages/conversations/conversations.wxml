@@ -1,0 +1,49 @@
+<!-- pages/conversations/conversations.wxml -->
+<view class="page-container">
+  <!-- 加载 -->
+  <view wx:if="{{loading}}" class="loading-box">
+    <view class="spinner"></view>
+    <text class="text-sm text-hint mt-sm">加载中…</text>
+  </view>
+
+  <!-- 错误 -->
+  <view wx:elif="{{error}}" class="center-box">
+    <text class="text-md text-secondary">加载失败</text>
+    <view class="btn-primary btn-sm mt-md" bindtap="onRetry">重试</view>
+  </view>
+
+  <!-- 空 -->
+  <view wx:elif="{{conversations.length === 0}}" class="center-box">
+    <text class="text-md text-hint">暂无消息</text>
+    <text class="text-xs text-hint mt-xs">去首页逛逛，联系卖家吧</text>
+  </view>
+
+  <!-- 会话列表 -->
+  <view wx:else class="conv-list">
+    <view
+      wx:for="{{conversations}}"
+      wx:key="conversationId"
+      class="conv-item"
+      data-user-id="{{item.otherUserId}}"
+      data-user-name="{{item.otherUserName}}"
+      data-avatar="{{item.otherUserAvatar}}"
+      data-item-id="{{item.itemId}}"
+      bindtap="onTapConversation"
+    >
+      <image class="conv-avatar" src="{{item.otherUserAvatar || '/images/default-avatar.png'}}" mode="aspectFill" binderror="onAvatarError" />
+      <view class="conv-body">
+        <view class="conv-top">
+          <text class="conv-name">{{item.otherUserName}}</text>
+          <text class="conv-time text-xs text-hint">{{item.lastTime}}</text>
+        </view>
+        <view class="conv-bottom">
+          <text class="conv-preview text-ellipsis text-sm text-secondary">
+            {{item.lastMsgType === 'image' ? '[图片]' : item.lastMsg}}
+          </text>
+          <view wx:if="{{item.unreadCount > 0}}" class="conv-badge">{{item.unreadCount > 99 ? '99+' : item.unreadCount}}</view>
+        </view>
+      </view>
+      <image class="conv-thumb" src="{{item.itemImage || '/images/placeholder.png'}}" mode="aspectFill" binderror="onThumbError" />
+    </view>
+  </view>
+</view>

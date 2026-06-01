@@ -1,0 +1,178 @@
+<!-- pages/publish/publish.wxml —— 发布商品页 -->
+<view class="page-container">
+  <!-- ===== 图片上传区 ===== -->
+  <view class="section-card">
+    <view class="section-title">商品图片（最多{{maxImages}}张）</view>
+    <view class="image-grid">
+      <!-- 已上传图片 -->
+      <view
+        wx:for="{{images}}"
+        wx:key="*this"
+        class="image-item"
+        data-index="{{index}}"
+        bindtap="onPreviewImage"
+      >
+        <image class="img" src="{{item || '/images/placeholder.png'}}" mode="aspectFill" binderror="onUploadedImageError" data-index="{{index}}" />
+        <view
+          class="delete-btn"
+          data-index="{{index}}"
+          catchtap="onDeleteImage"
+        >✕</view>
+      </view>
+
+      <!-- 添加按钮 -->
+      <view
+        wx:if="{{images.length < maxImages && !uploading}}"
+        class="add-btn"
+        bindtap="onChooseImage"
+      >
+        <text class="add-icon">+</text>
+        <text class="add-text text-xs text-hint">{{images.length}}/{{maxImages}}</text>
+      </view>
+
+      <!-- 上传中 -->
+      <view wx:if="{{uploading}}" class="uploading-tip">
+        <text class="text-sm text-primary">上传中 {{uploadProgress}}%</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===== 表单区 ===== -->
+  <view class="section-card">
+    <view class="section-title">商品信息</view>
+
+    <!-- 标题 -->
+    <view class="form-item">
+      <text class="label">标题</text>
+      <input
+        class="input"
+        placeholder="请输入商品标题"
+        maxlength="60"
+        data-field="title"
+        bindinput="onInputChange"
+        value="{{form.title}}"
+      />
+    </view>
+
+    <!-- 原价 -->
+    <view class="form-item">
+      <text class="label">原价</text>
+      <view class="input-row">
+        <text class="currency currency-original">¥</text>
+        <input
+          class="input input-price input-original"
+          type="digit"
+          placeholder="买入时的价格（选填）"
+          data-field="originalPrice"
+          bindinput="onInputChange"
+          value="{{form.originalPrice}}"
+        />
+      </view>
+    </view>
+
+    <!-- 售价 -->
+    <view class="form-item">
+      <text class="label">售价</text>
+      <view class="input-row">
+        <text class="currency">¥</text>
+        <input
+          class="input input-price"
+          type="digit"
+          placeholder="0.00"
+          data-field="price"
+          bindinput="onInputChange"
+          value="{{form.price}}"
+        />
+      </view>
+    </view>
+
+    <!-- 分类（picker） -->
+    <view class="form-item">
+      <text class="label">分类</text>
+      <picker
+        mode="selector"
+        range="{{categories}}"
+        value="{{categoryIndex}}"
+        bindchange="onCategoryPickerChange"
+      >
+        <view class="picker-value {{form.category ? '' : 'placeholder'}}">
+          {{form.category || '请选择分类'}}
+          <text class="picker-arrow">›</text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 新旧程度（picker） -->
+    <view class="form-item">
+      <text class="label">成色</text>
+      <picker
+        mode="selector"
+        range="{{conditions}}"
+        value="{{conditionIndex}}"
+        bindchange="onConditionPickerChange"
+      >
+        <view class="picker-value">
+          {{form.condition}}
+          <text class="picker-arrow">›</text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 交易方式（picker） -->
+    <view class="form-item">
+      <text class="label">交易方式</text>
+      <picker
+        mode="selector"
+        range="{{tradeMethods}}"
+        value="{{tradeMethodIndex}}"
+        bindchange="onTradeMethodPickerChange"
+      >
+        <view class="picker-value">
+          {{form.tradeMethod}}
+          <text class="picker-arrow">›</text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 交易地点 -->
+    <view class="form-item">
+      <text class="label">地点</text>
+      <input
+        class="input input-location"
+        placeholder="例如：XX大学图书馆"
+        data-field="location"
+        bindinput="onInputChange"
+        value="{{form.location}}"
+      />
+      <view class="location-pick-btn" bindtap="onChooseLocation">
+        <text class="text-primary text-sm">定位</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===== 描述区 ===== -->
+  <view class="section-card">
+    <view class="section-title">商品描述</view>
+    <textarea
+      class="desc-input"
+      placeholder="描述一下你的商品吧～（选填）"
+      maxlength="500"
+      data-field="description"
+      bindinput="onInputChange"
+      value="{{form.description}}"
+      auto-height
+    />
+    <view class="desc-count text-xs text-hint">{{form.description.length || 0}}/500</view>
+  </view>
+
+  <!-- ===== 提交按钮 ===== -->
+  <view class="submit-section">
+    <button
+      class="submit-btn {{submitting ? 'btn-disabled' : ''}}"
+      bindtap="onSubmit"
+      disabled="{{submitting || uploading}}"
+    >
+      {{submitting ? '发布中…' : '立即发布'}}
+    </button>
+  </view>
+</view>

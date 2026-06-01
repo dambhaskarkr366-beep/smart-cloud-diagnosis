@@ -1,0 +1,67 @@
+<!-- pages/guide/guide.wxml -->
+<view class="page-container">
+  <!-- 步骤 0：欢迎页 -->
+  <view wx:if="{{step === 0}}" class="welcome-section">
+    <view class="welcome-content">
+      <view class="welcome-icon"></view>
+      <view class="text-xxl font-bold mt-md">校园二手交易</view>
+      <view class="text-md text-secondary mt-sm">
+        中南大专属 · 安全交易
+      </view>
+    </view>
+    <view class="welcome-footer safe-area-bottom">
+      <button class="btn-primary" bindtap="onStart">开始使用</button>
+    </view>
+  </view>
+
+  <!-- 步骤 1：填写信息 -->
+  <view wx:if="{{step === 1}}" class="form-section">
+    <view class="form-header">
+      <view class="text-xl font-bold">完善信息</view>
+      <view class="text-sm text-secondary mt-sm">完善信息，开始校园交易</view>
+    </view>
+
+    <!-- 头像 + 昵称 -->
+    <view class="profile-card bg-white rounded-md p-md mt-lg">
+      <view class="flex">
+        <button class="avatar-picker" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+          <image class="avatar-img" src="{{avatarTempUrl || '/images/default-avatar.png'}}" mode="aspectFill" binderror="onAvatarError" />
+          <view class="avatar-tip text-xs text-hint mt-xs">点击选头像</view>
+        </button>
+        <view class="nickname-input ml-md flex-1">
+          <input class="input-lg" placeholder="请输入你的昵称" value="{{nickName}}" bindinput="onNickNameInput" maxlength="20" />
+        </view>
+      </view>
+    </view>
+
+    <!-- 校区 + 宿舍 -->
+    <view class="form-card bg-white rounded-md p-md mt-sm">
+      <!-- 校区 -->
+      <view class="form-item">
+        <text class="label">校区</text>
+        <picker mode="selector" range="{{campuses}}" value="{{campusIndex}}" bindchange="onCampusChange">
+          <view class="picker-value {{campus ? '' : 'placeholder'}}">
+            {{campus || '请选择校区'}}
+            <text class="picker-arrow">›</text>
+          </view>
+        </picker>
+      </view>
+      <!-- 宿舍区域 -->
+      <view class="form-item">
+        <text class="label">宿舍</text>
+        <picker mode="selector" range="{{dormitories}}" value="{{dormitoryIndex}}" bindchange="onDormitoryChange">
+          <view class="picker-value {{dormitory ? '' : 'placeholder'}}">
+            {{dormitory || '请选择宿舍区域'}}
+            <text class="picker-arrow">›</text>
+          </view>
+        </picker>
+      </view>
+    </view>
+
+    <view class="form-footer p-md mt-xl">
+      <button class="btn-primary" bindtap="onSubmit" disabled="{{submitting}}">
+        {{submitting ? '注册中…' : '完成注册'}}
+      </button>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,108 @@
+<!-- pages/chat/chat.wxml —— 聊天页 -->
+<view class="page-container">
+  <!-- ===== 加载中 ===== -->
+  <view wx:if="{{loading}}" class="loading-container">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中…</text>
+  </view>
+
+  <block wx:else>
+    <!-- ===== 关联商品信息条 ===== -->
+    <view wx:if="{{item}}" class="item-bar" bindtap="onTapItem">
+      <image class="item-thumb" src="{{item.images[0] || '/images/placeholder.png'}}" mode="aspectFill" binderror="onItemThumbError" />
+      <view class="item-info">
+        <view class="text-sm text-ellipsis">{{item.title}}</view>
+        <view class="text-md" style="color:var(--danger);font-weight:700;">{{item.price}}</view>
+      </view>
+      <view class="item-status text-xs">
+        {{item.status === 'selling' ? '在售' : item.status === 'sold' ? '已售' : '已预定'}}
+      </view>
+    </view>
+
+    <!-- ===== 消息列表 ===== -->
+    <scroll-view
+      class="message-list"
+      scroll-y
+      scroll-into-view="{{scrollToView}}"
+      scroll-with-animation
+      enhanced
+      show-scrollbar="{{false}}"
+    >
+      <!-- 消息为空 -->
+      <view wx:if="{{messages.length === 0}}" class="empty-msg">
+        <text class="text-sm text-hint">打个招呼吧～</text>
+      </view>
+
+      <!-- 消息项 -->
+      <view
+        wx:for="{{messages}}"
+        wx:key="_id"
+        class="msg-row {{item.isMine ? 'msg-mine' : 'msg-other'}}"
+      >
+        <!-- 对方消息：头像在左 -->
+        <block wx:if="{{!item.isMine}}">
+          <image
+            class="msg-avatar"
+            src="{{chatUserAvatar || '/images/default-avatar.png'}}"
+            mode="aspectFill"
+            binderror="onAvatarError"
+          />
+          <view class="msg-bubble bubble-other {{item.type === 'image' ? 'bubble-image' : ''}}">
+            <image wx:if="{{item.type === 'image'}}" class="msg-image" src="{{item.content || '/images/placeholder.png'}}" mode="aspectFill" binderror="onMsgImageError" data-index="{{index}}" bindtap="onPreviewMsgImage" data-url="{{item.content}}" />
+            <text wx:else>{{item.content}}</text>
+          </view>
+        </block>
+
+        <!-- 我的消息：头像在右 -->
+        <block wx:else>
+          <view class="msg-bubble bubble-mine {{item.type === 'image' ? 'bubble-image' : ''}} {{item.sending ? 'bubble-sending' : ''}} {{item.sendFailed ? 'bubble-failed' : ''}}">
+            <image wx:if="{{item.type === 'image'}}" class="msg-image" src="{{item.content || '/images/placeholder.png'}}" mode="aspectFill" binderror="onMsgImageError" data-index="{{index}}" bindtap="onPreviewMsgImage" data-url="{{item.content}}" />
+            <text wx:else>{{item.content}}</text>
+          </view>
+          <!-- 发送失败标记 -->
+          <view wx:if="{{item.sendFailed}}" class="msg-failed" data-index="{{index}}" bindtap="onResend">
+            <text class="text-xs text-danger">重发</text>
+          </view>
+          <!-- 发送中标记 -->
+          <view wx:elif="{{item.sending}}" class="msg-sending">
+            <text class="text-xs text-hint">...</text>
+          </view>
+          <image
+            class="msg-avatar"
+            src="{{myAvatar || '/images/default-avatar.png'}}"
+            mode="aspectFill"
+            binderror="onAvatarError"
+          />
+        </block>
+      </view>
+
+      <!-- 滚动锚点 -->
+      <view id="msg-bottom" style="height:2rpx;"></view>
+    </scroll-view>
+
+    <!-- ===== 输入栏 ===== -->
+    <view class="input-bar safe-area-bottom">
+      <!-- 图片按钮 -->
+      <view class="img-btn" bindtap="onChooseImage">
+        <text class="img-btn-icon">+</text>
+      </view>
+
+      <input
+        class="msg-input"
+        placeholder="输入消息…"
+        value="{{inputText}}"
+        bindinput="onInputChange"
+        confirm-type="send"
+        bindconfirm="onSendMessage"
+        adjust-position="{{true}}"
+        maxlength="500"
+      />
+      <view
+        class="send-btn {{inputText.trim() ? 'send-active' : ''}}"
+        bindtap="onSendMessage"
+      >
+        发送
+      </view>
+    </view>
+  </block>
+</view>

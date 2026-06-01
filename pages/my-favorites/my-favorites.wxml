@@ -1,0 +1,35 @@
+<!-- pages/my-favorites/my-favorites.wxml —— 我的收藏 -->
+<view class="page-container">
+  <view wx:if="{{loading}}" class="loading-container">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中…</text>
+  </view>
+
+  <view wx:elif="{{error}}" class="error-container">
+    <text class="text-md text-secondary">加载失败</text>
+    <view class="btn-primary btn-sm mt-md" bindtap="onRetry">重试</view>
+  </view>
+
+  <view wx:elif="{{items.length === 0}}" class="empty-state">
+    <view class="empty-icon"></view>
+    <text class="text-md text-hint">暂无收藏</text>
+    <text class="text-xs text-hint mt-xs">去首页看看吧～</text>
+  </view>
+
+  <!-- 瀑布流展示收藏商品 -->
+  <view wx:else class="waterfall">
+    <view class="waterfall-column">
+      <view wx:for="{{items}}" wx:key="_id" wx:if="{{index % 2 === 0}}" class="waterfall-item">
+        <item-card item="{{item}}" showSeller="{{true}}" />
+      </view>
+    </view>
+    <view class="waterfall-column">
+      <view wx:for="{{items}}" wx:key="_id" wx:if="{{index % 2 === 1}}" class="waterfall-item">
+        <item-card item="{{item}}" showSeller="{{true}}" />
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{loadingMore}}" class="load-more-tip">加载中…</view>
+  <view wx:if="{{!hasMore && items.length > 0}}" class="load-more-tip text-hint">—— 到底了 ——</view>
+</view>

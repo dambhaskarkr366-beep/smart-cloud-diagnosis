@@ -1,0 +1,72 @@
+<!-- pages/profile/profile.wxml —— 个人中心页 -->
+<view class="page-container">
+  <!-- ===== 未登录 ===== -->
+  <view wx:if="{{!userInfo}}" class="not-login">
+    <view class="not-login-card" bindtap="onGoLogin">
+      <view class="default-avatar"></view>
+      <view class="text-md mt-sm">点击登录</view>
+      <view class="text-xs text-hint mt-xs">登录后即可发布和购买</view>
+    </view>
+  </view>
+
+  <!-- ===== 已登录 ===== -->
+  <block wx:else>
+    <!-- 用户信息卡片 -->
+    <view class="user-card">
+      <image
+        class="user-avatar"
+        src="{{userInfo.avatarUrl || '/images/default-avatar.png'}}"
+        mode="aspectFill"
+        binderror="onAvatarError"
+      />
+      <view class="user-name text-xl font-bold">{{userInfo.nickName || '未设置昵称'}}</view>
+      <view class="user-meta">
+        {{userInfo.campus || '未选择校区'}}
+        <block wx:if="{{userInfo.dormitory}}"> · {{userInfo.dormitory}}</block>
+      </view>
+    </view>
+
+    <!-- 统计栏 -->
+    <view class="stats-bar">
+      <view class="stat-item">
+        <view class="stat-num">{{stats.selling}}</view>
+        <view class="stat-label">在售</view>
+      </view>
+      <view class="stat-item">
+        <view class="stat-num">{{stats.sold}}</view>
+        <view class="stat-label">已售</view>
+      </view>
+      <view class="stat-item">
+        <view class="stat-num">{{stats.favorites}}</view>
+        <view class="stat-label">收藏</view>
+      </view>
+    </view>
+
+    <!-- 菜单列表 -->
+    <view class="menu-section">
+      <view class="menu-item" data-id="messages" bindtap="onTapMenu">
+        <view class="menu-left">
+          <text>消息</text>
+        </view>
+        <text class="menu-arrow">›</text>
+      </view>
+      <view class="menu-item" data-id="myItems" bindtap="onTapMenu">
+        <view class="menu-left">
+          <text>我发布的</text>
+        </view>
+        <text class="menu-arrow">›</text>
+      </view>
+      <view class="menu-item" data-id="myFavorites" bindtap="onTapMenu">
+        <view class="menu-left">
+          <text>我的收藏</text>
+        </view>
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+
+    <!-- 退出登录 -->
+    <view class="logout-section">
+      <button class="logout-btn" bindtap="onLogout">退出登录</button>
+    </view>
+  </block>
+</view>

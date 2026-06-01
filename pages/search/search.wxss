@@ -1,0 +1,151 @@
+/* pages/search/search.wxss —— 搜索结果页样式 */
+.page-container {
+  min-height: 100vh;
+  background-color: var(--bg-page);
+}
+
+/* ===== 搜索栏 ===== */
+.search-bar {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 24rpx;
+  background-color: var(--bg-white);
+}
+
+.search-input-wrapper {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  height: 72rpx;
+  background-color: var(--bg-page);
+  border-radius: 4rpx;
+  padding: 0 24rpx;
+}
+
+.search-icon {
+  font-size: 28rpx;
+  margin-right: 12rpx;
+  flex-shrink: 0;
+}
+
+.search-input {
+  flex: 1;
+  height: 100%;
+  font-size: var(--font-md);
+}
+
+.search-cancel {
+  padding: 0 12rpx;
+  font-size: var(--font-md);
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+/* ===== 分类Tab ===== */
+.tab-scroll {
+  background-color: var(--bg-white);
+  border-bottom: 1rpx solid var(--bg-divider);
+}
+
+.tab-inner {
+  display: flex;
+  padding: 16rpx 24rpx;
+}
+
+.tab-item {
+  display: inline-flex;
+  align-items: center;
+  padding: 10rpx 28rpx;
+  margin-right: 16rpx;
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  border-radius: 4rpx;
+  background-color: var(--bg-page);
+  flex-shrink: 0;
+}
+
+.tab-active {
+  color: #ffffff;
+  background-color: var(--primary);
+}
+
+/* ===== 结果提示 ===== */
+.result-header {
+  padding: 16rpx 24rpx;
+  background-color: var(--bg-page);
+}
+
+/* ===== 瀑布流（与首页一致） ===== */
+.waterfall {
+  display: flex;
+  padding: 16rpx 16rpx 0;
+  gap: 16rpx;
+  align-items: flex-start;
+}
+
+.waterfall-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+/* ===== 各种状态（与首页一致） ===== */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 0;
+}
+
+.loading-spinner {
+  width: 56rpx;
+  height: 56rpx;
+  border: 4rpx solid var(--bg-divider);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-text {
+  margin-top: 20rpx;
+  font-size: var(--font-sm);
+  color: var(--text-hint);
+}
+
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 0;
+}
+
+.error-icon {
+  font-size: 80rpx;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 0;
+}
+
+.empty-icon {
+  font-size: 100rpx;
+  opacity: 0.6;
+}
+
+.load-more-tip {
+  text-align: center;
+  padding: 32rpx 0 48rpx;
+  font-size: var(--font-sm);
+  color: var(--text-hint);
+}

@@ -1,0 +1,123 @@
+/* components/item-card/item-card.wxss —— 商品卡片组件 */
+.card {
+  overflow: hidden;
+  background-color: var(--bg-white);
+  /* 宽度由父级列容器决定，实现双列瀑布流 */
+  width: 100%;
+}
+
+/* ===== 图片区（固定比例 1:1，aspectFill 裁剪） ===== */
+.card-image-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 100%; /* 1:1 正方形 */
+  overflow: hidden;
+  background-color: var(--bg-divider);
+}
+
+.card-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-divider);
+}
+
+/* ===== 图片覆盖层标签 ===== */
+.card-tag {
+  position: absolute;
+  top: 8rpx;
+  left: 8rpx;
+  padding: 2rpx 10rpx;
+  font-size: 18rpx;
+  color: #ffffff;
+  border-radius: 6rpx;
+  backdrop-filter: blur(6rpx);
+  line-height: 1.4;
+}
+
+.card-tag-right {
+  left: auto;
+  right: 8rpx;
+}
+
+/* 标签颜色变体 */
+.tag-green  { background-color: rgba(62, 198, 168, 0.85); }  /* 几乎全新 → 青绿 */
+.tag-blue   { background-color: rgba(108, 99, 255, 0.85); }  /* 轻微使用 → 主题紫 */
+.tag-orange { background-color: rgba(255, 153, 51, 0.85); }  /* 明显痕迹 → 橙色 */
+.tag-gray   { background-color: rgba(153, 153, 153, 0.85); } /* 较旧 → 灰色 */
+.tag-purple { background-color: rgba(180, 100, 240, 0.85); } /* 交易方式 → 紫色 */
+
+/* ===== 信息区 ===== */
+.card-body {
+  padding: 12rpx 14rpx 14rpx;
+}
+
+/* 标题 */
+.card-title {
+  font-size: 25rpx;
+  color: var(--text-primary);
+  line-height: 1.4;
+  min-height: 68rpx;
+  word-break: break-all;
+}
+
+/* 价格 */
+.card-price {
+  margin-top: 6rpx;
+  font-size: 30rpx;
+  color: var(--danger);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.price-symbol {
+  font-size: 22rpx;
+  font-weight: 500;
+  margin-right: 2rpx;
+}
+
+/* ===== 底部行：地点 + 浏览量 ===== */
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 6rpx;
+  min-height: 30rpx;
+}
+
+.card-location {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  overflow: hidden;
+  margin-right: var(--spacing-xs);
+}
+
+.location-icon {
+  flex-shrink: 0;
+  margin-right: 4rpx;
+  font-size: 20rpx;
+}
+
+.card-views {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* ===== 卖家信息行（可选） ===== */
+.card-seller {
+  display: flex;
+  align-items: center;
+  padding-top: 14rpx;
+  border-top: 1rpx solid var(--bg-divider);
+}
+
+.seller-avatar {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 4rpx;
+  background-color: var(--bg-divider);
+  flex-shrink: 0;
+}
